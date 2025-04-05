@@ -92,12 +92,25 @@ if st.session_state.awaiting_clarification and st.session_state.clarification_in
 elif st.session_state.awaiting_clarification:
     st.session_state.awaiting_clarification = False
     generated = generate_posts(st.session_state.clarified_inputs)
+
+# Try to split and catch formatting issues
+try:
+    linkedin_part = generated.split("2.")[0].strip()
+    instagram_part = generated.split("2.")[1].split("3.")[0].strip()
+    whatsapp_part = generated.split("3.")[1].strip()
+
     st.session_state.posts = {
-        "LinkedIn": generated.split("2.")[0].strip(),
-        "Instagram": "2." + generated.split("2.")[1].split("3.")[0].strip(),
-        "WhatsApp": "3." + generated.split("3.")[1].strip(),
+        "LinkedIn": linkedin_part,
+        "Instagram": "2. " + instagram_part,
+        "WhatsApp": "3. " + whatsapp_part,
     }
+
     st.experimental_rerun()
+
+except Exception as e:
+    st.error("⚠️ There was a problem parsing the AI response. Please try again or modify your input.")
+    st.text_area("Raw AI response (for debugging)", value=generated, height=300)
+
 
 # Display generated posts
 if st.session_state.posts:
