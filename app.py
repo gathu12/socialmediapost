@@ -76,7 +76,7 @@ if submitted and event and audience and tone:
     st.session_state.clarified_inputs = {"event": event, "audience": audience, "tone": tone}
     st.session_state.awaiting_clarification = True
     st.session_state.clarification_index = 0
-    st.experimental_rerun()
+    st.rerun()
 
 # Clarification loop
 if st.session_state.awaiting_clarification and st.session_state.clarification_index < len(st.session_state.clarifications):
@@ -87,7 +87,7 @@ if st.session_state.awaiting_clarification and st.session_state.clarification_in
     if st.button("Submit Answer"):
         st.session_state.clarified_inputs[f"clarification_{st.session_state.clarification_index + 1}"] = answer
         st.session_state.clarification_index += 1
-        st.experimental_rerun()
+        st.rerun()
 
 elif st.session_state.awaiting_clarification:
     st.session_state.awaiting_clarification = False
@@ -105,7 +105,7 @@ elif st.session_state.awaiting_clarification:
             "WhatsApp": "3. " + whatsapp_part,
         }
 
-        st.experimental_rerun()
+        st.rerun()
 
     except Exception as e:
         st.error("⚠️ There was a problem parsing the AI response. Please try again or modify your input.")
