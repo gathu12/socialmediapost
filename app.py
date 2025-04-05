@@ -93,23 +93,23 @@ elif st.session_state.awaiting_clarification:
     st.session_state.awaiting_clarification = False
 
     try:
-    generated = generate_posts(st.session_state.clarified_inputs)
+        generated = generate_posts(st.session_state.clarified_inputs)
 
-    linkedin_part = generated.split("2.")[0].strip()
-    instagram_part = generated.split("2.")[1].split("3.")[0].strip()
-    whatsapp_part = generated.split("3.")[1].strip()
+        linkedin_part = generated.split("2.")[0].strip()
+        instagram_part = generated.split("2.")[1].split("3.")[0].strip()
+        whatsapp_part = generated.split("3.")[1].strip()
 
-    st.session_state.posts = {
-        "LinkedIn": linkedin_part,
-        "Instagram": "2. " + instagram_part,
-        "WhatsApp": "3. " + whatsapp_part,
-    }
+        st.session_state.posts = {
+            "LinkedIn": linkedin_part,
+            "Instagram": "2. " + instagram_part,
+            "WhatsApp": "3. " + whatsapp_part,
+        }
 
-    st.experimental_rerun()
+        st.experimental_rerun()
 
-except Exception as e:
-    st.error("⚠️ There was a problem parsing the AI response. Please try again or modify your input.")
-    st.text_area("Raw AI response (for debugging)", value=locals().get("generated", "No response available."), height=300)
+    except Exception as e:
+        st.error("⚠️ There was a problem parsing the AI response. Please try again or modify your input.")
+        st.text_area("Raw AI response (for debugging)", value=locals().get("generated", "No response available."), height=300)
 
 # Display generated posts
 if st.session_state.posts:
